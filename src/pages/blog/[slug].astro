@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import Button from '../../components/Button.astro';
+import { link } from '../../lib/helpers';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', (p) => !p.data.draft);
@@ -17,7 +18,7 @@ const fmt = (d: Date) =>
 ---
 <BaseLayout title={post.data.title} description={post.data.excerpt}>
   <article class="mx-auto max-w-3xl px-4 pt-10 sm:px-6">
-    <a href="/blog" class="inline-flex items-center gap-1.5 text-sm font-bold text-plum-soft transition-colors hover:text-bubblegum-ink">
+    <a href={link('/blog')} class="inline-flex items-center gap-1.5 text-sm font-bold text-plum-soft transition-colors hover:text-bubblegum-ink">
       ← All posts
     </a>
 

@@ -13,8 +13,8 @@ export const site = {
   shortPitch:
     'The handmade world of Katherine Hillesland — one-of-a-kind jewelry, original art, and events with personality.',
 
-  // TODO(Katherine): replace with your real contact email before launch.
-  email: 'hello@katherinesabsurdities.com',
+  // Katherine's contact email — all "email me" links derive from this.
+  email: 'krhillesland@gmail.com',
 
   instagram: {
     handle: 'katherinesabsurdities',

@@ -7,7 +7,7 @@ import Badge from '../../components/Badge.astro';
 import Doodle from '../../components/Doodle.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { formatPrice, buyEmailHref } from '../../lib/helpers';
+import { formatPrice, buyEmailHref, link } from '../../lib/helpers';
 import { site } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -34,7 +34,7 @@ const others = (await getCollection('products'))
 ---
 <BaseLayout title={`${name} · ${site.shopBrand}`} description={tagline ?? `${name} — handmade by Katherine Hillesland.`}>
   <section class="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
-    <a href="/shop" class="inline-flex items-center gap-1.5 text-sm font-bold text-plum-soft transition-colors hover:text-bubblegum-ink">
+    <a href={link('/shop')} class="inline-flex items-center gap-1.5 text-sm font-bold text-plum-soft transition-colors hover:text-bubblegum-ink">
       ← Back to the shop
     </a>
 

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Badge from './Badge.astro';
 import Placeholder from './Placeholder.astro';
-import { formatPrice } from '../lib/helpers';
+import { formatPrice, link } from '../lib/helpers';
 
 interface Props {
   product: CollectionEntry<'products'>;
@@ -12,7 +12,7 @@ interface Props {
 const { product, class: className = '' } = Astro.props;
 const { name, price, currency, tagline, status, images } = product.data;
 const cover = images?.[0];
-const href = `/shop/${product.id}`;
+const href = link(`/shop/${product.id}`);
 ---
 <a
   href={href}

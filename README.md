@@ -98,15 +98,24 @@ The whole color palette and fonts live at the top of **`src/styles/global.css`**
 
 ---
 
-## 🌐 Putting it online
+## 🌐 It's live!
 
-This is a static site, so it can be hosted for free:
+The site auto-deploys to **GitHub Pages** every time changes are pushed to GitHub (via
+`.github/workflows/deploy.yml`). The live address is:
 
-1. Push this folder to GitHub (already set up).
-2. Connect the repo to [Netlify](https://netlify.com) or [Vercel](https://vercel.com) — they
-   auto-detect Astro and redeploy every time you save changes to GitHub.
-3. (Optional) Buy a domain like **katherinesabsurdities.com** and connect it in your host's
-   settings.
+**https://leo-minichillo.github.io/katherinewebsite/**
+
+Every push rebuilds and redeploys automatically — usually live within a minute or two. You
+can watch progress on the repository's **Actions** tab.
+
+### Using a custom domain later (e.g. katherinesabsurdities.com)
+
+1. Buy the domain.
+2. In `astro.config.mjs`: set `site` to `https://yourdomain.com` and **remove** the
+   `base: '/katherinewebsite'` line.
+3. Add a file `public/CNAME` containing just `yourdomain.com`.
+4. Point the domain's DNS at GitHub Pages, then set the domain under the repo's
+   **Settings → Pages**.
 
 ---
 

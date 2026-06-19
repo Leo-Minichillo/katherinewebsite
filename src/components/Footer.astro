@@ -1,6 +1,6 @@
 ---
 import { site } from '../data/site';
-import { emailHref } from '../lib/helpers';
+import { emailHref, link } from '../lib/helpers';
 import Doodle from './Doodle.astro';
 import Squiggle from './Squiggle.astro';
 
@@ -16,7 +16,7 @@ const helloEmail = emailHref(
     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
       <!-- Brand blurb -->
       <div class="lg:col-span-2">
-        <a href="/" class="flex items-center gap-2">
+        <a href={link('/')} class="flex items-center gap-2">
           <span class="grid h-9 w-9 place-items-center rounded-full bg-bubblegum text-white shadow-sticker">
             <Doodle name="sparkle" class="h-5 w-5" />
           </span>
@@ -33,7 +33,7 @@ const helloEmail = emailHref(
           {
             site.nav.map((item) => (
               <li>
-                <a class="text-plum-soft transition-colors hover:text-bubblegum-ink" href={item.href}>
+                <a class="text-plum-soft transition-colors hover:text-bubblegum-ink" href={link(item.href)}>
                   {item.label}
                 </a>
               </li>
@@ -42,7 +42,7 @@ const helloEmail = emailHref(
           {
             site.comingSoon.map((item) => (
               <li>
-                <a class="inline-flex items-center gap-2 text-plum-soft transition-colors hover:text-bubblegum-ink" href={item.href}>
+                <a class="inline-flex items-center gap-2 text-plum-soft transition-colors hover:text-bubblegum-ink" href={link(item.href)}>
                   {item.label}
                   <span class="rounded-full bg-blush px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide text-bubblegum-ink">
                     soon

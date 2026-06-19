@@ -6,6 +6,7 @@ import ComingSoon from '../../components/ComingSoon.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import Doodle from '../../components/Doodle.astro';
+import { link } from '../../lib/helpers';
 
 const posts = (await getCollection('posts', (p) => !p.data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
@@ -32,7 +33,7 @@ const fmt = (d: Date) =>
         <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <a
-              href={`/blog/${post.id}`}
+              href={link(`/blog/${post.id}`)}
               class="group flex flex-col overflow-hidden rounded-blob border-2 border-plum-ink/10 bg-white/60 shadow-sticker transition-transform hover:-translate-y-1"
             >
               <div class="aspect-[16/10] overflow-hidden">

@@ -1,7 +1,11 @@
 ---
 /**
  * Chunky, friendly button. Renders an <a> when given href, otherwise a <button>.
+ * Internal hrefs (starting with "/") are automatically base-path prefixed;
+ * external links (mailto:, https://) pass through untouched.
  */
+import { link } from '../lib/helpers';
+
 interface Props {
   href?: string;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -38,7 +42,8 @@ const sizes = {
 
 const cls = [base, variants[variant], sizes[size], className].join(' ');
 const Tag = href ? 'a' : 'button';
+const resolvedHref = href && href.startsWith('/') ? link(href) : href;
 ---
-<Tag class={cls} {...(href ? { href } : { type })} {...rest}>
+<Tag class={cls} {...(href ? { href: resolvedHref } : { type })} {...rest}>
   <slot />
 </Tag>

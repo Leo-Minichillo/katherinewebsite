@@ -4,8 +4,11 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // Update this to the real domain once it's registered (see README).
-  site: 'https://katherinesabsurdities.com',
+  // Deployed via GitHub Pages at <owner>.github.io/<repo>.
+  // When a custom domain is added: set `site` to it, delete `base`,
+  // and add public/CNAME (see README).
+  site: 'https://leo-minichillo.github.io',
+  base: '/katherinewebsite',
   vite: {
     plugins: [tailwindcss()],
   },

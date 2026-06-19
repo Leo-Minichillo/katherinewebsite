@@ -1,8 +1,13 @@
 ---
 import { site } from '../data/site';
+import { link } from '../lib/helpers';
 import Doodle from './Doodle.astro';
 
-const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+// Normalize the current path by stripping the site base (e.g. /katherinewebsite)
+// so active-state checks work against the raw nav paths ("/shop").
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+let pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+if (base && pathname.startsWith(base)) pathname = pathname.slice(base.length) || '/';
 const isActive = (href: string) => {
   const h = href.replace(/\/+$/, '') || '/';
   return h === '/' ? pathname === '/' : pathname === h || pathname.startsWith(h + '/');
@@ -16,7 +21,7 @@ const linkOff = 'text-plum-ink hover:bg-cream-deep hover:text-bubblegum-ink';
 <header class="sticky top-0 z-50 border-b-2 border-plum-ink/10 bg-cream/85 backdrop-blur-md">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
     <!-- Brand -->
-    <a href="/" class="group flex items-center gap-2" aria-label={`${site.brand} — home`}>
+    <a href={link('/')} class="group flex items-center gap-2" aria-label={`${site.brand} — home`}>
       <span
         class="grid h-9 w-9 place-items-center rounded-full bg-bubblegum text-white shadow-sticker transition-transform group-hover:rotate-12"
       >
@@ -35,7 +40,7 @@ const linkOff = 'text-plum-ink hover:bg-cream-deep hover:text-bubblegum-ink';
       {
         site.nav.map((item) => (
           <a
-            href={item.href}
+            href={link(item.href)}
             class={`${linkBase} ${isActive(item.href) ? linkOn : linkOff}`}
             aria-current={isActive(item.href) ? 'page' : undefined}
           >
@@ -89,7 +94,7 @@ const linkOff = 'text-plum-ink hover:bg-cream-deep hover:text-bubblegum-ink';
       {
         site.nav.map((item) => (
           <a
-            href={item.href}
+            href={link(item.href)}
             class={`rounded-2xl px-4 py-3 text-base font-bold ${
               isActive(item.href) ? 'bg-blush text-bubblegum-ink' : 'text-plum-ink'
             }`}

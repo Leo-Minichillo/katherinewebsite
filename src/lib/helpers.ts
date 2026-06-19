@@ -28,3 +28,14 @@ export function emailHref(subject: string, body: string): string {
 
 /** Direct message link to Instagram. */
 export const instagramDM = `${site.instagram.url}`;
+
+/**
+ * Prefix an internal path with the site's base path so links work when the
+ * site is served from a subpath (e.g. GitHub Pages: /katherinewebsite/...).
+ * External links (mailto:, https://) should NOT be passed through this.
+ */
+export function link(path: string): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  const p = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${p}`;
+}
