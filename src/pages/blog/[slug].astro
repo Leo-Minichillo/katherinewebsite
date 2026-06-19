@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Button from '../../components/Button.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', (p) => !p.data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<BaseLayout title={post.data.title} description={post.data.excerpt}>
+  <article class="mx-auto max-w-3xl px-4 pt-10 sm:px-6">
+    <a href="/blog" class="inline-flex items-center gap-1.5 text-sm font-bold text-plum-soft transition-colors hover:text-bubblegum-ink">
+      ← All posts
+    </a>
+
+    <header class="mt-6 text-center">
+      <time class="text-sm font-semibold text-bubblegum-ink">{fmt(post.data.date)}</time>
+      <h1 class="mt-2 text-balance font-display text-4xl font-semibold sm:text-5xl">
+        {post.data.title}
+      </h1>
+      {post.data.excerpt && <p class="mx-auto mt-3 max-w-xl text-lg text-plum-soft">{post.data.excerpt}</p>}
+    </header>
+
+    <div class="mt-8 overflow-hidden rounded-blob border-2 border-plum-ink/10 bg-white p-3 shadow-pop">
+      {
+        post.data.cover ? (
+          <Image src={post.data.cover} alt={post.data.title} width={1200} height={700} class="aspect-[16/9] w-full rounded-2xl object-cover" />
+        ) : (
+          <Placeholder label={post.data.title} kind="art" class="aspect-[16/9] w-full rounded-2xl" />
+        )
+      }
+    </div>
+
+    <div class="prose-katherine mx-auto mt-10 max-w-none">
+      <Content />
+    </div>
+
+    <div class="my-14 text-center">
+      <p class="font-hand text-3xl text-cherry-ink">thanks for reading ✶</p>
+      <div class="mt-4 flex flex-wrap justify-center gap-3">
+        <Button href="/shop" variant="primary">Visit the shop</Button>
+        <Button href="/blog" variant="outline">More posts</Button>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

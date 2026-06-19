@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Katherine's Absurdities">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFE3EE" />
+      <stop offset="1" stop-color="#FFD9C7" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect x="24" y="24" width="1152" height="582" rx="40" fill="none" stroke="#FF4D8D" stroke-width="6" />
+
+  <!-- doodles -->
+  <path d="M150 150c1.5 8 6.5 13 14 14-7.5 1.5-12.5 6.5-14 14-1.5-8-6.5-13-14-14 7.5-1.5 12.5-6 14-14Z" fill="#FF4D8D" />
+  <path d="M1040 470c1.5 8 6.5 13 14 14-7.5 1.5-12.5 6.5-14 14-1.5-8-6.5-13-14-14 7.5-1.5 12.5-6 14-14Z" fill="#E63946" />
+  <circle cx="1010" cy="150" r="10" fill="#FF4D8D" />
+  <circle cx="180" cy="470" r="10" fill="#E63946" />
+
+  <text x="600" y="250" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="92" font-weight="700" fill="#3A1B2A">Katherine's Absurdities</text>
+  <text x="600" y="330" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#6B4456">Handmade jewelry, original art &amp; a little beautiful chaos</text>
+
+  <g transform="translate(600 430)">
+    <rect x="-280" y="-34" width="560" height="68" rx="34" fill="#FF4D8D" />
+    <text x="0" y="13" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#FFF7F0">Absurd Jewelry · Art · Events</text>
+  </g>
+
+  <text x="600" y="545" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#3A1B2A">by Katherine Hillesland</text>
+</svg>

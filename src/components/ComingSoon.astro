@@ -1,0 +1,44 @@
+---
+import Doodle from './Doodle.astro';
+import Button from './Button.astro';
+import { site } from '../data/site';
+import { emailHref } from '../lib/helpers';
+
+interface Props {
+  title: string;
+  blurb: string;
+  bullets?: string[];
+  inquireSubject?: string;
+}
+const { title, blurb, bullets = [], inquireSubject } = Astro.props;
+const mailto = inquireSubject
+  ? emailHref(inquireSubject, `Hi Katherine,\n\n`)
+  : emailHref('Hello!', `Hi Katherine,\n\n`);
+---
+<section class="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
+  <span class="inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 font-hand text-2xl text-bubblegum-ink">
+    <Doodle name="sparkle" class="h-5 w-5" /> coming soon
+  </span>
+  <h1 class="mt-5 text-4xl font-semibold text-balance sm:text-5xl">{title}</h1>
+  <p class="mx-auto mt-4 max-w-xl text-lg text-plum-soft text-balance">{blurb}</p>
+
+  {
+    bullets.length > 0 && (
+      <ul class="mx-auto mt-8 flex max-w-md flex-col gap-3 text-left">
+        {bullets.map((b) => (
+          <li class="flex items-start gap-3 rounded-2xl border-2 border-plum-ink/10 bg-white/60 px-4 py-3 shadow-sticker">
+            <Doodle name="heart" class="mt-1 h-4 w-4 shrink-0 text-cherry" />
+            <span class="text-plum-ink">{b}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+    <Button href={mailto} variant="primary" size="lg">Email me about this</Button>
+    <Button href={site.instagram.url} variant="outline" size="lg" target="_blank" rel="noopener noreferrer">
+      Find me on Instagram
+    </Button>
+  </div>
+</section>

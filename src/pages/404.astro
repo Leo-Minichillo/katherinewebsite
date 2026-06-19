@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Doodle from '../components/Doodle.astro';
+---
+<BaseLayout title="Page not found" description="This page wandered off.">
+  <section class="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
+    <div class="relative inline-block">
+      <span class="font-display text-8xl font-semibold text-bubblegum sm:text-9xl">404</span>
+      <Doodle name="sparkle" class="absolute -right-6 -top-4 h-10 w-10 text-cherry animate-floaty" />
+      <Doodle name="asterisk" class="absolute -bottom-2 -left-6 h-8 w-8 text-bubblegum/60" />
+    </div>
+    <h1 class="mt-6 text-balance font-display text-3xl font-semibold sm:text-4xl">
+      Well, this is absurd.
+    </h1>
+    <p class="mx-auto mt-3 max-w-md text-lg text-plum-soft">
+      The page you're looking for wandered off somewhere. Let's get you back to the good stuff.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <Button href="/" variant="primary" size="lg">Back home</Button>
+      <Button href="/shop" variant="outline" size="lg">Visit the shop</Button>
+    </div>
+  </section>
+</BaseLayout>

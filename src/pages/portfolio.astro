@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortfolioItem from '../components/PortfolioItem.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Doodle from '../components/Doodle.astro';
+import Button from '../components/Button.astro';
+
+const items = (await getCollection('portfolio')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const filters = [
+  { value: 'all', label: 'Everything' },
+  { value: 'art', label: 'Art' },
+  { value: 'events', label: 'Events' },
+];
+---
+<BaseLayout
+  title="Portfolio"
+  description="Original art and event coordination work by Katherine Hillesland."
+>
+  <section class="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+    <SectionHeading
+      eyebrow="work samples"
+      title="Portfolio"
+      intro="A growing collection of the art I've made and the events I've helped bring to life. Filter by what you're curious about."
+    />
+
+    <!-- Filter controls -->
+    <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter portfolio">
+      {
+        filters.map((f, i) => (
+          <button
+            type="button"
+            data-filter={f.value}
+            class:list={[
+              'filter-btn rounded-full border-2 px-5 py-2 text-sm font-bold transition-colors',
+              i === 0
+                ? 'border-bubblegum bg-bubblegum text-white'
+                : 'border-plum-ink/15 bg-cream text-plum-ink hover:border-bubblegum',
+            ]}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+          >
+            {f.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <!-- Grid -->
+    {
+      items.length === 0 ? (
+        <p class="mt-12 text-plum-soft">Portfolio pieces are on their way — check back soon!</p>
+      ) : (
+        <div id="portfolio-grid" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((item) => (
+            <div class="portfolio-cell" data-category={item.data.category}>
+              <PortfolioItem item={item} />
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    <p id="portfolio-empty" class="mt-10 hidden text-center text-plum-soft">
+      Nothing in this category yet — but there will be soon.
+    </p>
+  </section>
+
+  <!-- CTA -->
+  <section class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
+    <Doodle name="sparkle" class="mx-auto h-9 w-9 text-bubblegum" />
+    <h2 class="mt-3 text-balance font-display text-3xl font-semibold sm:text-4xl">
+      Have a project in mind?
+    </h2>
+    <p class="mx-auto mt-3 max-w-xl text-lg text-plum-soft">
+      Commissions and event collaborations are always welcome. Tell me what you're dreaming up.
+    </p>
+    <div class="mt-7">
+      <Button href="/contact" variant="primary" size="lg">Start a conversation</Button>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cells = document.querySelectorAll<HTMLElement>('.portfolio-cell');
+  const empty = document.getElementById('portfolio-empty');
+
+  const active = 'border-bubblegum bg-bubblegum text-white';
+  const inactive = 'border-plum-ink/15 bg-cream text-plum-ink hover:border-bubblegum';
+
+  function applyFilter(value: string) {
+    let visible = 0;
+    cells.forEach((cell) => {
+      const show = value === 'all' || cell.dataset.category === value;
+      cell.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    empty?.classList.toggle('hidden', visible !== 0);
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((b) => {
+        const on = b === btn;
+        b.setAttribute('aria-pressed', String(on));
+        b.className = `filter-btn rounded-full border-2 px-5 py-2 text-sm font-bold transition-colors ${
+          on ? active : inactive
+        }`;
+      });
+      applyFilter(btn.dataset.filter || 'all');
+    });
+  });
+</script>

@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Badge from './Badge.astro';
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  item: CollectionEntry<'portfolio'>;
+  class?: string;
+}
+const { item, class: className = '' } = Astro.props;
+const { title, category, year, blurb, cover } = item.data;
+const kind = category === 'events' ? 'event' : 'art';
+const label = category === 'events' ? 'Events' : 'Art';
+---
+<article
+  class={`group overflow-hidden rounded-blob border-2 border-plum-ink/10 bg-white/60 shadow-sticker transition-transform duration-200 hover:-translate-y-1 ${className}`}
+>
+  <div class="relative aspect-[4/3] overflow-hidden">
+    {
+      cover ? (
+        <Image
+          src={cover}
+          alt={title}
+          width={800}
+          height={600}
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      ) : (
+        <Placeholder label={title} kind={kind} class="h-full w-full" />
+      )
+    }
+    <Badge variant={category === 'events' ? 'red' : 'pink'} class="absolute left-3 top-3">
+      {label}
+    </Badge>
+  </div>
+  <div class="p-5">
+    <div class="flex items-baseline justify-between gap-3">
+      <h3 class="font-display text-xl font-semibold text-plum-ink">{title}</h3>
+      {year && <span class="text-sm text-plum-soft">{year}</span>}
+    </div>
+    {blurb && <p class="mt-2 text-plum-soft">{blurb}</p>}
+  </div>
+</article>

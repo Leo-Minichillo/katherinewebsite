@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Doodle from '../components/Doodle.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { site } from '../data/site';
+import { emailHref } from '../lib/helpers';
+
+const generalEmail = emailHref('Hello, Katherine!', `Hi Katherine,\n\n`);
+const customEmail = emailHref(
+  'Custom commission inquiry',
+  `Hi Katherine,\n\nI'd love a custom piece. Here's what I'm imagining:\n- \n\nMy budget/timeline:\n- \n\nThank you!\n`
+);
+const eventEmail = emailHref(
+  'Event coordination inquiry',
+  `Hi Katherine,\n\nI'd love help with an event. A few details:\n- Type of event:\n- Date:\n- Location:\n- Vibe I'm going for:\n\nThank you!\n`
+);
+---
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Katherine — for jewelry, custom commissions, art, and events."
+>
+  <section class="mx-auto max-w-5xl px-4 pt-12 sm:px-6">
+    <SectionHeading
+      eyebrow="say hello"
+      title="Let's talk"
+      intro="Questions about a piece, a custom idea, or an event you're planning? I'd genuinely love to hear from you — I read and reply to everything myself."
+      align="center"
+      class="mb-12"
+    />
+
+    <!-- Primary contact options -->
+    <div class="grid gap-6 sm:grid-cols-2">
+      <a
+        href={generalEmail}
+        class="group rounded-blob border-2 border-plum-ink/10 bg-white/70 p-8 text-center shadow-sticker transition-transform hover:-translate-y-1 hover:border-bubblegum/50"
+      >
+        <span class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-blush text-bubblegum-ink">
+          <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2.5"></rect>
+            <path d="m3.5 7 8.5 6 8.5-6"></path>
+          </svg>
+        </span>
+        <h2 class="mt-4 font-display text-2xl font-semibold">Email me</h2>
+        <p class="mt-1 break-words text-plum-soft">{site.email}</p>
+        <p class="mt-3 font-hand text-2xl text-bubblegum-ink group-hover:underline">tap to write →</p>
+      </a>
+
+      <a
+        href={site.instagram.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group rounded-blob border-2 border-plum-ink/10 bg-white/70 p-8 text-center shadow-sticker transition-transform hover:-translate-y-1 hover:border-bubblegum/50"
+      >
+        <span class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-blush text-bubblegum-ink">
+          <svg viewBox="0 0 24 24" class="h-7 w-7" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.4.37 1 .42 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.05 1.2-.25 1.8-.42 2.2a3.8 3.8 0 0 1-.9 1.38 3.8 3.8 0 0 1-1.38.9c-.4.17-1 .37-2.2.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.05-1.8-.25-2.2-.42a3.8 3.8 0 0 1-1.38-.9 3.8 3.8 0 0 1-.9-1.38c-.17-.4-.37-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.05-1.2.25-1.8.42-2.2.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.4-.17 1-.37 2.2-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.95c-3.15 0-3.5.01-4.75.07-.9.04-1.4.2-1.72.32-.43.17-.74.37-1.06.7-.32.32-.52.63-.7 1.06-.12.32-.28.82-.32 1.72-.06 1.25-.07 1.6-.07 4.75s.01 3.5.07 4.75c.04.9.2 1.4.32 1.72.17.43.37.74.7 1.06.32.32.63.52 1.06.7.32.12.82.28 1.72.32 1.25.06 1.6.07 4.75.07s3.5-.01 4.75-.07c.9-.04 1.4-.2 1.72-.32.43-.17.74-.37 1.06-.7.32-.32.52-.63.7-1.06.12-.32.28-.82.32-1.72.06-1.25.07-1.6.07-4.75s-.01-3.5-.07-4.75c-.04-.9-.2-1.4-.32-1.72a2.85 2.85 0 0 0-.7-1.06 2.85 2.85 0 0 0-1.06-.7c-.32-.12-.82-.28-1.72-.32-1.25-.06-1.6-.07-4.75-.07Zm0 3.32a4.53 4.53 0 1 1 0 9.06 4.53 4.53 0 0 1 0-9.06Zm0 7.47a2.94 2.94 0 1 0 0-5.88 2.94 2.94 0 0 0 0 5.88Zm5.77-7.69a1.06 1.06 0 1 1-2.12 0 1.06 1.06 0 0 1 2.12 0Z"></path>
+          </svg>
+        </span>
+        <h2 class="mt-4 font-display text-2xl font-semibold">Message me</h2>
+        <p class="mt-1 text-plum-soft">@{site.instagram.handle}</p>
+        <p class="mt-3 font-hand text-2xl text-bubblegum-ink group-hover:underline">slide into the DMs →</p>
+      </a>
+    </div>
+
+    <!-- What can I help with -->
+    <div class="mt-8 grid gap-4 sm:grid-cols-3">
+      <a href={customEmail} class="rounded-2xl border-2 border-plum-ink/10 bg-cream-deep px-5 py-5 transition-colors hover:border-bubblegum">
+        <Doodle name="gem" class="h-6 w-6 text-cherry" />
+        <h3 class="mt-2 font-display text-lg font-semibold">Custom commissions</h3>
+        <p class="mt-1 text-sm text-plum-soft">A one-of-a-kind piece, made just for you.</p>
+      </a>
+      <a href={eventEmail} class="rounded-2xl border-2 border-plum-ink/10 bg-cream-deep px-5 py-5 transition-colors hover:border-bubblegum">
+        <Doodle name="star" class="h-6 w-6 text-cherry" />
+        <h3 class="mt-2 font-display text-lg font-semibold">Events</h3>
+        <p class="mt-1 text-sm text-plum-soft">Coordination and styling with personality.</p>
+      </a>
+      <a href={generalEmail} class="rounded-2xl border-2 border-plum-ink/10 bg-cream-deep px-5 py-5 transition-colors hover:border-bubblegum">
+        <Doodle name="heart" class="h-6 w-6 text-cherry" />
+        <h3 class="mt-2 font-display text-lg font-semibold">Just say hi</h3>
+        <p class="mt-1 text-sm text-plum-soft">Questions, collabs, or kind words welcome.</p>
+      </a>
+    </div>
+
+    <div class="mt-12 mb-4 text-center">
+      <p class="font-hand text-3xl text-cherry-ink">can't wait to hear from you ✶</p>
+      <div class="mt-4">
+        <Button href="/shop" variant="outline">Or browse the shop</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

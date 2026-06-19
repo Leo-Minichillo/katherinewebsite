@@ -1,0 +1,39 @@
+---
+/**
+ * Little hand-drawn SVG accents that give the site personality.
+ * Usage: <Doodle name="sparkle" class="h-6 w-6 text-bubblegum" />
+ * Color follows the current text color, so set it with Tailwind text-* classes.
+ */
+interface Props {
+  name: 'sparkle' | 'star' | 'heart' | 'flower' | 'blob' | 'asterisk' | 'gem';
+  class?: string;
+  title?: string;
+}
+const { name, class: className = '', title } = Astro.props;
+
+const shapes: Record<Props['name'], string> = {
+  sparkle:
+    '<path d="M12 1c.8 5.7 5.3 10.2 11 11-5.7.8-10.2 5.3-11 11-.8-5.7-5.3-10.2-11-11C6.7 11.2 11.2 6.7 12 1Z"/>',
+  star: '<path d="M12 2l2.7 6.6 7.1.6-5.4 4.6 1.7 6.9L12 17l-6.1 3.7 1.7-6.9L2.2 9.2l7.1-.6L12 2Z"/>',
+  heart:
+    '<path d="M12 21S3.5 14.7 3.5 8.8C3.5 5.7 5.9 3.3 9 3.3c1.8 0 3 1.3 3 1.3s1.2-1.3 3-1.3c3.1 0 5.5 2.4 5.5 5.5C20.5 14.7 12 21 12 21Z"/>',
+  flower:
+    '<g><circle cx="12" cy="6.4" r="3.6"/><circle cx="17" cy="9.8" r="3.6"/><circle cx="15.2" cy="15.7" r="3.6"/><circle cx="8.8" cy="15.7" r="3.6"/><circle cx="7" cy="9.8" r="3.6"/><circle cx="12" cy="12" r="3.1" fill="#fff7f0"/></g>',
+  blob: '<path d="M12 2.3c4.5 0 9.2 2.4 9.7 7 .5 4.6-2.6 8.1-6.1 10.1-3.6 2-8.2 2-10.9-.7-2.7-2.7-2.9-7.3-1.3-10.9C5 4.2 7.5 2.3 12 2.3Z"/>',
+  asterisk:
+    '<g stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="3" x2="12" y2="21"/><line x1="4.8" y1="7.5" x2="19.2" y2="16.5"/><line x1="19.2" y1="7.5" x2="4.8" y2="16.5"/></g>',
+  gem: '<path d="M7 3h10l4 6-9 12L3 9l4-6Z" fill="currentColor" opacity="0.92"/><path d="M3 9h18M9 3l-2 6 5 12 5-12-2-6" fill="none" stroke="#fff7f0" stroke-width="1.1" opacity="0.85"/>',
+};
+
+const role = title ? 'img' : undefined;
+---
+<svg
+  viewBox="0 0 24 24"
+  class={className}
+  fill="currentColor"
+  role={role}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+  xmlns="http://www.w3.org/2000/svg"
+  set:html={shapes[name]}
+></svg>

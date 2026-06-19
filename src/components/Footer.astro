@@ -1,0 +1,87 @@
+---
+import { site } from '../data/site';
+import { emailHref } from '../lib/helpers';
+import Doodle from './Doodle.astro';
+import Squiggle from './Squiggle.astro';
+
+const year = new Date().getFullYear();
+const helloEmail = emailHref(
+  'Hello from your website!',
+  `Hi Katherine,\n\n`
+);
+---
+<footer class="mt-20 bg-cream-deep">
+  <Squiggle class="h-5 w-full text-bubblegum" />
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Brand blurb -->
+      <div class="lg:col-span-2">
+        <a href="/" class="flex items-center gap-2">
+          <span class="grid h-9 w-9 place-items-center rounded-full bg-bubblegum text-white shadow-sticker">
+            <Doodle name="sparkle" class="h-5 w-5" />
+          </span>
+          <span class="font-display text-xl font-semibold text-plum-ink">{site.brand}</span>
+        </a>
+        <p class="mt-4 max-w-sm text-plum-soft">{site.shortPitch}</p>
+        <p class="mt-4 font-hand text-2xl text-cherry-ink">— made by hand, with a little chaos</p>
+      </div>
+
+      <!-- Explore -->
+      <div>
+        <h3 class="font-display text-lg font-semibold text-plum-ink">Explore</h3>
+        <ul class="mt-3 space-y-2">
+          {
+            site.nav.map((item) => (
+              <li>
+                <a class="text-plum-soft transition-colors hover:text-bubblegum-ink" href={item.href}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+          {
+            site.comingSoon.map((item) => (
+              <li>
+                <a class="inline-flex items-center gap-2 text-plum-soft transition-colors hover:text-bubblegum-ink" href={item.href}>
+                  {item.label}
+                  <span class="rounded-full bg-blush px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide text-bubblegum-ink">
+                    soon
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Say hello -->
+      <div>
+        <h3 class="font-display text-lg font-semibold text-plum-ink">Say hello</h3>
+        <ul class="mt-3 space-y-2">
+          <li>
+            <a class="text-plum-soft transition-colors hover:text-bubblegum-ink" href={helloEmail}>
+              Email me
+            </a>
+          </li>
+          <li>
+            <a
+              class="text-plum-soft transition-colors hover:text-bubblegum-ink"
+              href={site.instagram.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @{site.instagram.handle}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col items-center justify-between gap-3 border-t-2 border-plum-ink/10 pt-6 text-sm text-plum-soft sm:flex-row">
+      <p>© {year} {site.owner}. All rights reserved.</p>
+      <p class="flex items-center gap-1.5">
+        Made with <Doodle name="heart" class="h-4 w-4 text-cherry" /> and a lot of pink.
+      </p>
+    </div>
+  </div>
+</footer>

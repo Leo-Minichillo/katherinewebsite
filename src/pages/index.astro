@@ -1,0 +1,142 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Doodle from '../components/Doodle.astro';
+import Marquee from '../components/Marquee.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProductCard from '../components/ProductCard.astro';
+import PortfolioItem from '../components/PortfolioItem.astro';
+import Placeholder from '../components/Placeholder.astro';
+import InstagramBand from '../components/InstagramBand.astro';
+import { site } from '../data/site';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const featured = products.filter((p) => p.data.featured);
+const showProducts = (featured.length ? featured : products).slice(0, 4);
+
+const portfolio = (await getCollection('portfolio')).sort((a, b) => a.data.order - b.data.order);
+const featuredPort = portfolio.filter((p) => p.data.featured);
+const showPortfolio = (featuredPort.length ? featuredPort : portfolio).slice(0, 3);
+
+const heroTiles = showProducts.slice(0, 3);
+---
+<BaseLayout>
+  <!-- HERO -->
+  <section class="relative overflow-hidden">
+    <Doodle name="sparkle" class="absolute left-[6%] top-16 hidden h-10 w-10 text-bubblegum/50 animate-floaty md:block" />
+    <Doodle name="asterisk" class="absolute right-[8%] top-24 hidden h-9 w-9 text-cherry/40 md:block" />
+    <Doodle name="heart" class="absolute bottom-10 left-[14%] hidden h-7 w-7 text-bubblegum/40 md:block" />
+
+    <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-16 pt-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:pt-16">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 font-hand text-2xl text-bubblegum-ink">
+          <Doodle name="sparkle" class="h-5 w-5" /> hi, I'm Katherine
+        </span>
+        <h1 class="mt-5 text-balance text-5xl font-semibold leading-[1.02] sm:text-6xl md:text-7xl">
+          Handmade jewelry &amp; art with a little
+          <span class="relative whitespace-nowrap text-cherry-ink">
+            chaos
+            <svg class="absolute -bottom-2 left-0 h-3 w-full text-bubblegum" viewBox="0 0 200 12" preserveAspectRatio="none" fill="none" aria-hidden="true">
+              <path d="M2 8 C 50 2, 150 2, 198 7" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            </svg>
+          </span>
+        </h1>
+        <p class="mt-6 max-w-xl text-lg text-plum-soft sm:text-xl">
+          Welcome to <strong class="font-semibold text-plum-ink">{site.brand}</strong> — the home of
+          <strong class="font-semibold text-plum-ink">{site.shopBrand}</strong>, original artwork, and
+          events with personality, all made by hand by {site.owner}.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href="/shop" variant="primary" size="lg">Shop Absurd Jewelry</Button>
+          <Button href="/portfolio" variant="outline" size="lg">See the portfolio</Button>
+        </div>
+        <p class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold text-plum-soft">
+          <span class="inline-flex items-center gap-1.5"><Doodle name="heart" class="h-4 w-4 text-cherry" /> one-of-a-kind</span>
+          <span class="inline-flex items-center gap-1.5"><Doodle name="star" class="h-4 w-4 text-bubblegum" /> made to order</span>
+          <span class="inline-flex items-center gap-1.5"><Doodle name="sparkle" class="h-4 w-4 text-cherry" /> shipped with love</span>
+        </p>
+      </div>
+
+      <!-- Playful pinboard of pieces -->
+      <div class="relative mx-auto h-[22rem] w-full max-w-md sm:h-[26rem]">
+        <div class="absolute left-2 top-6 w-40 -rotate-6 rounded-blob border-2 border-plum-ink/10 bg-white p-2 shadow-pop sm:w-48">
+          {heroTiles[0]
+            ? <Placeholder label={heroTiles[0].data.name} kind="jewelry" class="aspect-square w-full rounded-2xl" />
+            : <Placeholder label="Absurd Jewelry" kind="jewelry" class="aspect-square w-full rounded-2xl" />}
+        </div>
+        <div class="absolute right-1 top-0 w-36 rotate-6 rounded-blob border-2 border-plum-ink/10 bg-white p-2 shadow-pop sm:w-44">
+          {heroTiles[1]
+            ? <Placeholder label={heroTiles[1].data.name} kind="art" class="aspect-square w-full rounded-2xl" />
+            : <Placeholder label="Original Art" kind="art" class="aspect-square w-full rounded-2xl" />}
+        </div>
+        <div class="absolute bottom-0 left-1/2 w-40 -translate-x-1/2 rotate-3 rounded-blob border-2 border-plum-ink/10 bg-white p-2 shadow-pop sm:w-48">
+          {heroTiles[2]
+            ? <Placeholder label={heroTiles[2].data.name} kind="jewelry" class="aspect-square w-full rounded-2xl" />
+            : <Placeholder label="Made by hand" kind="event" class="aspect-square w-full rounded-2xl" />}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Marquee />
+
+  <!-- FEATURED SHOP -->
+  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <SectionHeading
+        eyebrow="from the shop"
+        title="Absurd Jewelry"
+        intro="Tiny wearable sculptures. Each piece is handmade and one-of-a-kind — when it's gone, it's gone."
+      />
+      <Button href="/shop" variant="ghost" class="shrink-0">Shop all →</Button>
+    </div>
+    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+      {showProducts.map((product) => <ProductCard product={product} />)}
+    </div>
+  </section>
+
+  <!-- PORTFOLIO TEASER -->
+  <section class="bg-cream-deep py-16">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <SectionHeading
+          eyebrow="beyond jewelry"
+          title="Art &amp; events"
+          intro="From original artwork to coordinating events that actually feel like you — here's a peek at the bigger picture."
+        />
+        <Button href="/portfolio" variant="ghost" class="shrink-0">See portfolio →</Button>
+      </div>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {showPortfolio.map((item) => <PortfolioItem item={item} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT TEASER -->
+  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <div class="grid items-center gap-10 lg:grid-cols-2">
+      <div class="relative mx-auto w-full max-w-sm">
+        <div class="rotate-2 rounded-blob border-2 border-plum-ink/10 bg-white p-3 shadow-pop">
+          <Placeholder label="Katherine" kind="art" class="aspect-[4/5] w-full rounded-2xl" />
+        </div>
+        <Doodle name="sparkle" class="absolute -right-3 -top-3 h-10 w-10 text-bubblegum animate-floaty" />
+      </div>
+      <div>
+        <SectionHeading eyebrow="the human behind it" title="Maker, artist, event-conjurer" />
+        <p class="mt-5 text-lg text-plum-soft">
+          I'm Katherine — I make jewelry that's a little weird in the best way, paint and create
+          whenever I can, and coordinate events that feel personal instead of cookie-cutter. This is
+          where all of those absurd, wonderful things finally live under one roof.
+        </p>
+        <div class="mt-7">
+          <Button href="/about" variant="secondary">More about me</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pb-16">
+    <InstagramBand />
+  </div>
+</BaseLayout>

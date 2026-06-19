@@ -1,0 +1,17 @@
+---
+import { site } from '../data/site';
+// Duplicate the list so the scroll loops seamlessly (animation shifts by -50%).
+const words = [...site.tickerWords, ...site.tickerWords];
+---
+<div class="overflow-hidden border-y-2 border-plum-ink/10 bg-bubblegum py-3 text-white">
+  <div class="animate-marquee flex w-max items-center gap-5 whitespace-nowrap pl-5">
+    {
+      words.map((w) => (
+        <>
+          <span class="font-hand text-2xl">{w}</span>
+          <span aria-hidden="true" class="text-cream/80">✦</span>
+        </>
+      ))
+    }
+  </div>
+</div>

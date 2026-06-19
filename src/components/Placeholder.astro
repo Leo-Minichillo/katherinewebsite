@@ -1,0 +1,57 @@
+---
+import Doodle from './Doodle.astro';
+
+/**
+ * A friendly, on-brand image placeholder used until real photos are added.
+ * It looks intentional (gradient + doodles + label) instead of a broken image.
+ * Once a real photo exists, the cards render that instead — see ProductCard.
+ */
+interface Props {
+  label?: string;
+  kind?: 'jewelry' | 'art' | 'event';
+  class?: string;
+}
+const { label = '', kind = 'jewelry', class: className = '' } = Astro.props;
+
+// Deterministic variety so each item looks a little different but stable.
+let h = 5381;
+for (const c of label) h = ((h << 5) + h + c.charCodeAt(0)) >>> 0;
+
+const palettes: [string, string][] = [
+  ['#FFE3EE', '#FF4D8D'],
+  ['#FFD9C7', '#E63946'],
+  ['#FFEEE2', '#FF7DA8'],
+  ['#FFE3EE', '#E63946'],
+  ['#FFD9C7', '#FF4D8D'],
+];
+const [c1, c2] = palettes[h % palettes.length];
+const rot = (h % 7) - 3;
+const centerDoodle = kind === 'art' ? 'flower' : kind === 'event' ? 'star' : 'gem';
+---
+<div
+  class={`relative flex items-center justify-center overflow-hidden ${className}`}
+  style={`background: radial-gradient(120% 120% at 30% 20%, ${c1} 0%, ${c2} 130%);`}
+>
+  <!-- scattered doodles -->
+  <Doodle name="sparkle" class="absolute left-[12%] top-[16%] h-7 w-7 text-white/55 animate-floaty" />
+  <Doodle name="asterisk" class="absolute right-[14%] top-[22%] h-6 w-6 text-white/45" />
+  <Doodle name="heart" class="absolute bottom-[16%] left-[20%] h-5 w-5 text-white/45" />
+  <Doodle name="sparkle" class="absolute bottom-[18%] right-[16%] h-5 w-5 text-white/55" />
+
+  <div class="relative flex flex-col items-center gap-3 px-5 text-center">
+    <span class="grid h-20 w-20 place-items-center rounded-full bg-white/25 backdrop-blur-sm">
+      <Doodle name={centerDoodle} class="h-11 w-11 text-white" />
+    </span>
+    {label && (
+      <span
+        class="font-hand text-2xl leading-tight text-white drop-shadow-[0_1px_0_rgba(58,27,42,0.25)]"
+        style={`transform: rotate(${rot}deg)`}
+      >
+        {label}
+      </span>
+    )}
+    <span class="text-[0.65rem] font-semibold uppercase tracking-widest text-white/75">
+      photo coming soon
+    </span>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Doodle from '../../components/Doodle.astro';
+import { site } from '../../data/site';
+
+const products = (await getCollection('products')).sort((a, b) => {
+  // Available first, then by order, then alphabetically.
+  const soldA = a.data.status === 'sold' ? 1 : 0;
+  const soldB = b.data.status === 'sold' ? 1 : 0;
+  if (soldA !== soldB) return soldA - soldB;
+  if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+  return a.data.name.localeCompare(b.data.name);
+});
+
+const steps = [
+  { doodle: 'heart', title: 'Find a piece you love', text: 'Every item is handmade and one-of-a-kind.' },
+  { doodle: 'star', title: 'Email or DM to claim it', text: 'Tap the buttons on any piece — I reply personally.' },
+  { doodle: 'sparkle', title: 'I send it your way', text: 'We sort out payment + shipping, and it ships with love.' },
+] as const;
+---
+<BaseLayout
+  title="Shop · Absurd Jewelry"
+  description="Shop handmade, one-of-a-kind jewelry from Absurd Jewelry by Katherine Hillesland."
+>
+  <section class="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+    <SectionHeading
+      eyebrow="the shop"
+      title="Absurd Jewelry"
+      intro="Handmade, one-of-a-kind pieces. Since everything is made by hand, when something sells, it's truly gone — so grab the one that's calling your name."
+    />
+
+    {
+      products.length === 0 ? (
+        <div class="mt-12 rounded-blob border-2 border-dashed border-plum-ink/15 p-12 text-center">
+          <Doodle name="gem" class="mx-auto h-10 w-10 text-bubblegum" />
+          <p class="mt-3 text-lg text-plum-soft">
+            New pieces are being made right now. Follow along on{' '}
+            <a class="font-semibold text-bubblegum-ink underline" href={site.instagram.url}>
+              Instagram
+            </a>{' '}
+            to catch the next drop.
+          </p>
+        </div>
+      ) : (
+        <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+          {products.map((product) => <ProductCard product={product} />)}
+        </div>
+      )
+    }
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="mx-auto mt-16 max-w-6xl px-4 sm:px-6">
+    <div class="rounded-blob bg-cream-deep p-8 sm:p-10">
+      <h2 class="text-center font-display text-2xl font-semibold sm:text-3xl">How buying works</h2>
+      <p class="mx-auto mt-2 max-w-lg text-center text-plum-soft">
+        One-tap checkout is coming soon. For now, claiming a piece is quick and personal:
+      </p>
+      <ol class="mt-8 grid gap-6 sm:grid-cols-3">
+        {
+          steps.map((s, i) => (
+            <li class="relative rounded-2xl border-2 border-plum-ink/10 bg-white/70 p-6 shadow-sticker">
+              <span class="absolute -top-3 -left-3 grid h-9 w-9 place-items-center rounded-full bg-bubblegum font-display text-lg font-bold text-white shadow-sticker">
+                {i + 1}
+              </span>
+              <Doodle name={s.doodle} class="h-7 w-7 text-cherry" />
+              <h3 class="mt-3 font-display text-lg font-semibold">{s.title}</h3>
+              <p class="mt-1 text-sm text-plum-soft">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>

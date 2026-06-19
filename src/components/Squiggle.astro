@@ -1,0 +1,30 @@
+---
+/**
+ * A wavy hand-drawn divider line. Stretches to the width of its container.
+ * Usage: <Squiggle class="text-bubblegum h-5 w-full" />
+ */
+interface Props {
+  class?: string;
+  strokeWidth?: number;
+}
+const { class: className = '', strokeWidth = 5 } = Astro.props;
+
+// Build a smooth repeating wave so it tiles cleanly at any width.
+const seg = 40;
+const width = 1200;
+let d = 'M0 20';
+for (let x = 0; x < width; x += seg) {
+  const cpY = (x / seg) % 2 === 0 ? 3 : 37;
+  d += ` Q ${x + seg / 2} ${cpY} ${x + seg} 20`;
+}
+---
+<svg
+  class={className}
+  viewBox="0 0 1200 40"
+  preserveAspectRatio="none"
+  fill="none"
+  aria-hidden="true"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path d={d} stroke="currentColor" stroke-width={strokeWidth} stroke-linecap="round" />
+</svg>

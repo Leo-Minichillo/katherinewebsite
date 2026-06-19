@@ -1,0 +1,23 @@
+---
+import Doodle from './Doodle.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  align?: 'left' | 'center';
+  class?: string;
+}
+const { eyebrow, title, intro, align = 'left', class: className = '' } = Astro.props;
+const alignCls = align === 'center' ? 'items-center text-center mx-auto' : 'items-start text-left';
+---
+<div class={`flex max-w-2xl flex-col gap-3 ${alignCls} ${className}`}>
+  {eyebrow && (
+    <span class="inline-flex items-center gap-2 font-hand text-2xl text-bubblegum-ink">
+      <Doodle name="sparkle" class="h-5 w-5" />
+      {eyebrow}
+    </span>
+  )}
+  <h2 class="text-3xl font-semibold text-balance sm:text-4xl md:text-5xl">{title}</h2>
+  {intro && <p class="text-lg text-plum-soft text-balance">{intro}</p>}
+</div>

@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Doodle from '../../components/Doodle.astro';
+
+const posts = (await getCollection('posts', (p) => !p.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<BaseLayout title="Blog" description="Notes from the studio — by Katherine Hillesland.">
+  {
+    posts.length === 0 ? (
+      <ComingSoon
+        title="The Blog"
+        blurb="Soon this is where I'll share studio notes, new collections, behind-the-scenes chaos, and the stories behind the pieces. It's coming — pinky promise."
+        inquireSubject="Tell me when the blog is live!"
+      />
+    ) : (
+      <section class="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+        <SectionHeading
+          eyebrow="notes from the studio"
+          title="The Blog"
+          intro="Stories, studio notes, and the occasional happy mess. Just getting started — more soon."
+        />
+        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post) => (
+            <a
+              href={`/blog/${post.id}`}
+              class="group flex flex-col overflow-hidden rounded-blob border-2 border-plum-ink/10 bg-white/60 shadow-sticker transition-transform hover:-translate-y-1"
+            >
+              <div class="aspect-[16/10] overflow-hidden">
+                {post.data.cover ? (
+                  <Image
+                    src={post.data.cover}
+                    alt={post.data.title}
+                    width={700}
+                    height={440}
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <Placeholder label={post.data.title} kind="art" class="h-full w-full" />
+                )}
+              </div>
+              <div class="flex flex-1 flex-col p-6">
+                <time class="text-sm font-semibold text-bubblegum-ink">{fmt(post.data.date)}</time>
+                <h2 class="mt-1 font-display text-xl font-semibold group-hover:text-bubblegum-ink">
+                  {post.data.title}
+                </h2>
+                {post.data.excerpt && <p class="mt-2 text-plum-soft">{post.data.excerpt}</p>}
+                <span class="mt-4 inline-flex items-center gap-1 text-sm font-bold text-plum-ink">
+                  Read more <Doodle name="sparkle" class="h-4 w-4 text-bubblegum" />
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

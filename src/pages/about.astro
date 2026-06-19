@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Doodle from '../components/Doodle.astro';
+import Squiggle from '../components/Squiggle.astro';
+import Placeholder from '../components/Placeholder.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { site } from '../data/site';
+
+// EDIT ME: a few playful facts about Katherine. Change the text freely.
+const funFacts = [
+  { doodle: 'gem', text: 'Absurd Jewelry started as a pile of beads on my floor and refused to stop.' },
+  { doodle: 'flower', text: 'If it can be made by hand, I have probably tried to make it.' },
+  { doodle: 'star', text: 'I love a good theme — give me an event and I will run with it.' },
+  { doodle: 'heart', text: 'Pink and red are not just colors here, they are a whole personality.' },
+] as const;
+---
+<BaseLayout
+  title="About"
+  description="Meet Katherine Hillesland — the artist, maker, and event coordinator behind Katherine's Absurdities and Absurd Jewelry."
+>
+  <!-- INTRO -->
+  <section class="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+    <div class="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <div class="relative mx-auto w-full max-w-sm">
+        <div class="-rotate-2 rounded-blob border-2 border-plum-ink/10 bg-white p-3 shadow-pop">
+          <!-- EDIT ME: replace this placeholder with a real headshot (see README). -->
+          <Placeholder label="A photo of Katherine" kind="art" class="aspect-[4/5] w-full rounded-2xl" />
+        </div>
+        <Doodle name="heart" class="absolute -left-3 -top-3 h-9 w-9 text-cherry animate-floaty" />
+        <Doodle name="sparkle" class="absolute -bottom-3 -right-3 h-9 w-9 text-bubblegum" />
+      </div>
+
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 font-hand text-2xl text-bubblegum-ink">
+          <Doodle name="sparkle" class="h-5 w-5" /> nice to meet you
+        </span>
+        <h1 class="mt-5 text-balance text-4xl font-semibold sm:text-5xl md:text-6xl">
+          I'm Katherine, and I make things.
+        </h1>
+        <p class="mt-6 text-lg text-plum-soft">
+          <!-- EDIT ME: this is your story — make it yours. -->
+          I'm an artist, jewelry maker, and event coordinator who never quite learned how to pick
+          just one creative lane. <strong class="font-semibold text-plum-ink">{site.brand}</strong> is
+          where all of it comes together: handmade jewelry, original art, and events designed with
+          personality and care.
+        </p>
+        <p class="mt-4 text-lg text-plum-soft">
+          Everything here is made by hand, usually in a happy little mess, and always with the goal
+          of making something you can't find anywhere else.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href="/shop" variant="primary">Browse Absurd Jewelry</Button>
+          <Button href="/contact" variant="outline">Work with me</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Squiggle class="mx-auto mt-16 h-6 max-w-6xl px-6 text-bubblegum/60" />
+
+  <!-- WHAT I DO -->
+  <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <SectionHeading
+      eyebrow="what I do"
+      title="Three creative obsessions"
+      intro="They started separately. These days they all feed each other."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-6 md:grid-cols-3">
+      <article class="rounded-blob border-2 border-plum-ink/10 bg-white/60 p-7 shadow-sticker">
+        <span class="grid h-12 w-12 place-items-center rounded-full bg-blush text-bubblegum-ink">
+          <Doodle name="gem" class="h-7 w-7" />
+        </span>
+        <h3 class="mt-4 font-display text-2xl font-semibold">Absurd Jewelry</h3>
+        <p class="mt-2 text-plum-soft">
+          Handmade, one-of-a-kind pieces that feel like tiny wearable sculptures — bold, colorful,
+          and a little bit weird.
+        </p>
+      </article>
+      <article class="rounded-blob border-2 border-plum-ink/10 bg-white/60 p-7 shadow-sticker">
+        <span class="grid h-12 w-12 place-items-center rounded-full bg-blush text-bubblegum-ink">
+          <Doodle name="flower" class="h-7 w-7" />
+        </span>
+        <h3 class="mt-4 font-display text-2xl font-semibold">Original Art</h3>
+        <p class="mt-2 text-plum-soft">
+          Paintings, illustrations, and handmade goods. The portfolio is where the bigger, messier,
+          more ambitious ideas live.
+        </p>
+      </article>
+      <article class="rounded-blob border-2 border-plum-ink/10 bg-white/60 p-7 shadow-sticker">
+        <span class="grid h-12 w-12 place-items-center rounded-full bg-blush text-bubblegum-ink">
+          <Doodle name="star" class="h-7 w-7" />
+        </span>
+        <h3 class="mt-4 font-display text-2xl font-semibold">Event Coordination</h3>
+        <p class="mt-2 text-plum-soft">
+          Thoughtfully planned events with a real point of view — the kind that feel personal,
+          intentional, and a little bit magic.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- FUN FACTS -->
+  <section class="mx-auto max-w-4xl px-4 pb-8 sm:px-6">
+    <div class="rounded-blob bg-cream-deep p-8 sm:p-10">
+      <h2 class="text-center font-display text-2xl font-semibold sm:text-3xl">
+        A few absurd facts
+      </h2>
+      <ul class="mt-7 grid gap-4 sm:grid-cols-2">
+        {
+          funFacts.map((f) => (
+            <li class="flex items-start gap-3 rounded-2xl border-2 border-plum-ink/10 bg-white/70 px-4 py-4 shadow-sticker">
+              <Doodle name={f.doodle} class="mt-0.5 h-6 w-6 shrink-0 text-bubblegum" />
+              <span class="text-plum-ink">{f.text}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mx-auto max-w-3xl px-4 py-14 text-center sm:px-6">
+    <h2 class="text-balance font-display text-3xl font-semibold sm:text-4xl">
+      Let's make something absurd together.
+    </h2>
+    <p class="mx-auto mt-3 max-w-xl text-lg text-plum-soft">
+      Whether you want a piece of jewelry, a custom commission, or a hand planning your event — I'd
+      love to hear what you have in mind.
+    </p>
+    <div class="mt-7 flex flex-wrap justify-center gap-3">
+      <Button href="/contact" variant="primary" size="lg">Get in touch</Button>
+      <Button href="/shop" variant="outline" size="lg">Visit the shop</Button>
+    </div>
+  </section>
+</BaseLayout>

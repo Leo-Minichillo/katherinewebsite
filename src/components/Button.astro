@@ -1,0 +1,44 @@
+---
+/**
+ * Chunky, friendly button. Renders an <a> when given href, otherwise a <button>.
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: unknown;
+}
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-transform duration-150 will-change-transform hover:-translate-y-0.5 active:translate-y-0.5 focus-visible:outline-none';
+
+const variants = {
+  primary: 'bg-bubblegum text-white shadow-pop hover:bg-bubblegum-ink',
+  secondary: 'bg-cherry text-white shadow-sticker hover:bg-cherry-ink',
+  outline:
+    'bg-cream text-plum-ink border-2 border-plum-ink/15 shadow-sticker hover:border-bubblegum hover:text-bubblegum-ink',
+  ghost: 'bg-transparent text-plum-ink hover:text-bubblegum-ink',
+};
+
+const sizes = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg',
+};
+
+const cls = [base, variants[variant], sizes[size], className].join(' ');
+const Tag = href ? 'a' : 'button';
+---
+<Tag class={cls} {...(href ? { href } : { type })} {...rest}>
+  <slot />
+</Tag>

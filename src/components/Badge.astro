@@ -1,0 +1,25 @@
+---
+/** A small sticker-style badge/tag. */
+interface Props {
+  variant?: 'pink' | 'red' | 'soft' | 'sold' | 'outline';
+  rotate?: boolean;
+  class?: string;
+}
+const { variant = 'pink', rotate = true, class: className = '' } = Astro.props;
+
+const variants = {
+  pink: 'bg-bubblegum text-white',
+  red: 'bg-cherry text-white',
+  soft: 'bg-blush text-bubblegum-ink',
+  sold: 'bg-plum-ink text-cream',
+  outline: 'bg-cream text-plum-ink border-2 border-plum-ink/15',
+};
+
+const cls = [
+  'inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide shadow-sticker',
+  variants[variant],
+  rotate ? '-rotate-3' : '',
+  className,
+].join(' ');
+---
+<span class={cls}><slot /></span>

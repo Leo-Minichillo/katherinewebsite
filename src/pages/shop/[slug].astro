@@ -1,0 +1,175 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Badge from '../../components/Badge.astro';
+import Doodle from '../../components/Doodle.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { formatPrice, buyEmailHref } from '../../lib/helpers';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+  return products.map((product) => ({
+    params: { slug: product.id },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const { name, price, currency, tagline, materials, status, images } = product.data;
+const { Content } = await render(product);
+
+const gallery = images ?? [];
+const isSold = status === 'sold';
+const buyHref = buyEmailHref(name, price);
+
+// A few other pieces to keep browsing.
+const others = (await getCollection('products'))
+  .filter((p) => p.id !== product.id)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+---
+<BaseLayout title={`${name} · ${site.shopBrand}`} description={tagline ?? `${name} — handmade by Katherine Hillesland.`}>
+  <section class="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
+    <a href="/shop" class="inline-flex items-center gap-1.5 text-sm font-bold text-plum-soft transition-colors hover:text-bubblegum-ink">
+      ← Back to the shop
+    </a>
+
+    <div class="mt-6 grid gap-10 lg:grid-cols-2">
+      <!-- Gallery -->
+      <div>
+        <div class="overflow-hidden rounded-blob border-2 border-plum-ink/10 bg-white p-3 shadow-pop">
+          {
+            gallery.length > 0 ? (
+              <Image
+                id="main-image"
+                src={gallery[0]}
+                alt={name}
+                width={1000}
+                height={1000}
+                class="aspect-square w-full rounded-2xl object-cover"
+              />
+            ) : (
+              <Placeholder label={name} kind="jewelry" class="aspect-square w-full rounded-2xl" />
+            )
+          }
+        </div>
+        {
+          gallery.length > 1 && (
+            <div class="mt-3 grid grid-cols-4 gap-3">
+              {gallery.map((img, i) => (
+                <button
+                  type="button"
+                  class="thumb overflow-hidden rounded-xl border-2 border-plum-ink/10 bg-white p-1 transition-colors hover:border-bubblegum"
+                  data-index={i}
+                >
+                  <Image src={img} alt={`${name} — view ${i + 1}`} width={200} height={200} class="aspect-square w-full rounded-lg object-cover" />
+                </button>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <!-- Details -->
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <Badge variant="soft" rotate={false}>{site.shopBrand}</Badge>
+          {isSold && <Badge variant="sold" rotate={false}>Sold</Badge>}
+          {status === 'made-to-order' && <Badge variant="red" rotate={false}>Made to order</Badge>}
+        </div>
+
+        <h1 class="mt-3 text-balance font-display text-4xl font-semibold sm:text-5xl">{name}</h1>
+        {tagline && <p class="mt-2 text-lg text-plum-soft">{tagline}</p>}
+
+        <p class="mt-5 font-display text-3xl font-semibold text-cherry-ink">
+          {formatPrice(price, currency)}
+        </p>
+
+        <!-- Description (from the markdown body) -->
+        <div class="prose-katherine mt-6 max-w-none text-plum-ink/90">
+          <Content />
+        </div>
+
+        {
+          materials && (
+            <p class="mt-5 inline-flex items-center gap-2 rounded-full bg-cream-deep px-4 py-2 text-sm text-plum-soft">
+              <Doodle name="sparkle" class="h-4 w-4 text-bubblegum" />
+              <span><strong class="font-semibold text-plum-ink">Materials:</strong> {materials}</span>
+            </p>
+          )
+        }
+
+        <!-- Purchase -->
+        <div class="mt-8 rounded-blob border-2 border-plum-ink/10 bg-white/70 p-6 shadow-sticker">
+          {
+            isSold ? (
+              <div>
+                <h2 class="font-display text-xl font-semibold">This one found a home 💕</h2>
+                <p class="mt-1 text-plum-soft">
+                  But I'd love to make you something similar — reach out and let's talk.
+                </p>
+                <div class="mt-4 flex flex-wrap gap-3">
+                  <Button href={buyEmailHref(`Something like "${name}"`)} variant="primary">
+                    Request a similar piece
+                  </Button>
+                  <Button href={site.instagram.url} variant="outline" target="_blank" rel="noopener noreferrer">
+                    DM on Instagram
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h2 class="font-display text-xl font-semibold">Want it? Let's make it yours.</h2>
+                <p class="mt-1 text-plum-soft">
+                  One-tap checkout is coming soon. For now, just reach out — I reply personally and
+                  we'll sort out payment and shipping.
+                </p>
+                <div class="mt-4 flex flex-wrap gap-3">
+                  <Button href={buyHref} variant="primary" size="lg">✉ Email to purchase</Button>
+                  <Button href={site.instagram.url} variant="outline" size="lg" target="_blank" rel="noopener noreferrer">
+                    DM on Instagram
+                  </Button>
+                </div>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- More pieces -->
+  {
+    others.length > 0 && (
+      <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <h2 class="font-display text-2xl font-semibold sm:text-3xl">More little absurdities</h2>
+        <div class="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+          {others.map((p) => <ProductCard product={p} />)}
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<script>
+  // Swap the main image when a thumbnail is clicked.
+  const main = document.getElementById('main-image') as HTMLImageElement | null;
+  const thumbs = document.querySelectorAll<HTMLButtonElement>('.thumb');
+  if (main) {
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        const img = thumb.querySelector('img');
+        if (img) {
+          main.src = img.src;
+          main.srcset = img.srcset;
+        }
+        thumbs.forEach((t) => t.classList.remove('border-bubblegum'));
+        thumb.classList.add('border-bubblegum');
+      });
+    });
+  }
+</script>

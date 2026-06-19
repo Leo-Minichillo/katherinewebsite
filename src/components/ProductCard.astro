@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Badge from './Badge.astro';
+import Placeholder from './Placeholder.astro';
+import { formatPrice } from '../lib/helpers';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+  class?: string;
+}
+const { product, class: className = '' } = Astro.props;
+const { name, price, currency, tagline, status, images } = product.data;
+const cover = images?.[0];
+const href = `/shop/${product.id}`;
+---
+<a
+  href={href}
+  class={`group flex flex-col rounded-blob border-2 border-plum-ink/10 bg-white/60 p-3 shadow-sticker transition-transform duration-200 hover:-translate-y-1 hover:border-bubblegum/40 ${className}`}
+>
+  <div class="relative aspect-square overflow-hidden rounded-2xl">
+    {
+      cover ? (
+        <Image
+          src={cover}
+          alt={name}
+          width={700}
+          height={700}
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      ) : (
+        <Placeholder label={name} kind="jewelry" class="h-full w-full" />
+      )
+    }
+    {status === 'sold' && <Badge variant="sold" class="absolute left-3 top-3">Sold</Badge>}
+    {status === 'made-to-order' && (
+      <Badge variant="red" class="absolute left-3 top-3">Made to order</Badge>
+    )}
+  </div>
+
+  <div class="mt-3 flex flex-1 flex-col px-1 pb-1">
+    <h3 class="font-display text-xl font-semibold text-plum-ink group-hover:text-bubblegum-ink">
+      {name}
+    </h3>
+    {tagline && <p class="mt-0.5 text-sm text-plum-soft">{tagline}</p>}
+    <p class="mt-2 font-bold text-cherry-ink">{formatPrice(price, currency)}</p>
+  </div>
+</a>
